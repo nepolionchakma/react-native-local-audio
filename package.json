@@ -40,5 +40,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "react-native": "src/index.ts"
 }

@@ -1,4 +1,4 @@
-package com.myapp
+package com.audiolibrary
 
 import android.content.ContentResolver
 import android.net.Uri
@@ -10,7 +10,6 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
 
     override fun getName(): String = "AudioModule"
 
-    // ✅ Reusable query function for songs
     private fun querySongs(
         selection: String?,
         selectionArgs: Array<String>?,
@@ -65,7 +64,6 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
         return audioList
     }
 
-    // ✅ Get all audio with optional params
     @ReactMethod
     fun getAllAudio(options: ReadableMap, promise: Promise) {
         try {
@@ -76,7 +74,7 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
             val coverQuality = if (options.hasKey("coverQuality")) options.getInt("coverQuality") else null
 
             val sortOrder = buildString {
-                append("${MediaStore.Audio.Media.getColumnName(sortBy ?: "TITLE")} $orderBy")
+                append("${getColumnName(sortBy ?: "TITLE")} $orderBy")
                 if (limit != null) append(" LIMIT $limit")
                 if (offset != null) append(" OFFSET $offset")
             }
@@ -88,7 +86,6 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
         }
     }
 
-    // ✅ Get all albums (sorted by album ASC)
     @ReactMethod
     fun getSongsByAlbum(promise: Promise) {
         try {
@@ -135,7 +132,6 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
         }
     }
 
-    // ✅ Search songs by title (expects { title: "..." })
     @ReactMethod
     fun searchSongsByTitle(options: ReadableMap, promise: Promise) {
         try {
@@ -151,8 +147,8 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
     }
 }
 
-// ✅ Helper for safe column mapping
-private fun MediaStore.Audio.Media.getColumnName(name: String): String {
+// ✅ Helper function (moved outside class, fixed)
+private fun getColumnName(name: String): String {
     return when (name.uppercase()) {
         "TITLE" -> MediaStore.Audio.Media.TITLE
         "ARTIST" -> MediaStore.Audio.Media.ARTIST
