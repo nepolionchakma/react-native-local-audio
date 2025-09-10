@@ -1,4 +1,4 @@
-### 📖 README.md (updated)
+### 📖 README.md
 
 ````markdown
 # react-native-local-audio
@@ -114,7 +114,7 @@ console.log(searchResult);
 Clone the repo and install dependencies:
 
 ```sh
-git clone https://github.com/yourusername/react-native-local-audio.git
+git clone https://github.com/nepolionchakma/react-native-local-audio.git
 cd react-native-local-audio
 yarn install
 ```
@@ -177,3 +177,4 @@ npm install react-native-local-audio
 ## 📄 License
 
 MIT © 2025
+[License](https://github.com/nepolionchakma/react-native-local-audio/blob/main/LICENSE)
