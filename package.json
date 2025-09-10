@@ -1,0 +1,44 @@
+{
+  "name": "react-native-local-audio",
+  "version": "1.0.0",
+  "description": "A React Native module to fetch local audio files with metadata (Android support, iOS coming soon).",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf lib",
+    "prepare": "yarn build"
+  },
+  "keywords": [
+    "react-native",
+    "audio",
+    "music",
+    "media",
+    "songs",
+    "local"
+  ],
+  "author": "Nepolion Chakma",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=17",
+    "react-native": ">=0.71"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/react": "^18.2.0",
+    "@types/react-native": "^0.73.10"
+  },
+  "files": [
+    "lib",
+    "android",
+    "ios",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/react-native-local-audio.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
