@@ -1,4 +1,4 @@
-package com.audiolibrary
+package com.audiomodule
 
 import android.content.ContentResolver
 import android.net.Uri
