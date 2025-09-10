@@ -23,11 +23,16 @@ android {
 
     // This is the key to exposing variants consumable by other projects:
     publishing {
-        multipleVariants("release", "debug") {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+        singleVariant("debug") {
             withSourcesJar()
             withJavadocJar()
         }
     }
+
 }
 
 dependencies {
