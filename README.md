@@ -36,6 +36,15 @@ yarn add react-native-local-audio
 ```
 ````
 
+```tsx
+// add in the android/settings.gradle
+include ':react-native-local-audio'
+project(':react-native-local-audio').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-local-audio/android')
+
+// dependencies add in the android/app/build.gradle
+implementation project(':react-native-local-audio')
+```
+
 ---
 
 ## 🔗 Linking
@@ -81,29 +90,24 @@ ext {
 ## 🚀 Usage
 
 ```tsx
-import {
-  getAllAudio,
-  getSongsByAlbum,
-  searchSongsByTitle,
-} from "react-native-local-audio";
+import AudioModule from "react-native-local-audio";
 
 // Example: get all audio
-const songs = await getAllAudio({
+const songs = await AudioModule.getAllAudio({
   sortBy: "TITLE",
   orderBy: "ASC",
   limit: 20,
   offset: 0,
   coverQuality: 50,
 });
-
 console.log(songs);
 
 // Example: get songs by album
-const albums = await getSongsByAlbum();
+const albums = await AudioModule.getSongsByAlbum();
 console.log(albums);
 
 // Example: search songs by title
-const searchResult = await searchSongsByTitle({ title: "love" });
+const searchResult = await AudioModule.searchSongsByTitle({ title: "ale" });
 console.log(searchResult);
 ```
 
