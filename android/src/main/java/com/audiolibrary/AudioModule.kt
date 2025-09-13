@@ -14,7 +14,7 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
         selection: String?,
         selectionArgs: Array<String>?,
         sortOrder: String?,
-        coverQuality: Int?
+        artworkQuality: Int?
     ): WritableNativeArray {
         val contentResolver: ContentResolver = reactContext.contentResolver
         val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
@@ -43,18 +43,18 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
                 val song = WritableNativeMap()
                 val albumId = it.getLong(albumIdIndex)
 
-                song.putString("id", it.getString(idIndex))
+                song.putInt("id", it.getInt(idIndex))
                 song.putString("title", it.getString(titleIndex))
                 song.putString("artist", it.getString(artistIndex))
                 song.putString("album", it.getString(albumIndex))
-                song.putString("path", it.getString(pathIndex))
+                song.putString("url", it.getString(pathIndex))
 
                 val albumArtUri = Uri.parse("content://media/external/audio/albumart")
-                val coverUri = Uri.withAppendedPath(albumArtUri, albumId.toString())
-                song.putString("cover", coverUri.toString())
+                val artworkUri = Uri.withAppendedPath(albumArtUri, albumId.toString())
+                song.putString("artwork", artworkUri.toString())
 
-                if (coverQuality != null) {
-                    song.putInt("coverQuality", coverQuality)
+                if (artworkQuality != null) {
+                    song.putInt("artworkQuality", artworkQuality)
                 }
 
                 audioList.pushMap(song)
@@ -71,7 +71,7 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
             val orderBy = if (options.hasKey("orderBy")) options.getString("orderBy") else "ASC"
             val limit = if (options.hasKey("limit")) options.getInt("limit") else null
             val offset = if (options.hasKey("offset")) options.getInt("offset") else null
-            val coverQuality = if (options.hasKey("coverQuality")) options.getInt("coverQuality") else null
+            val artworkQuality = if (options.hasKey("artworkQuality")) options.getInt("artworkQuality") else null
 
             val sortOrder = buildString {
                 append("${getColumnName(sortBy ?: "TITLE")} $orderBy")
@@ -79,7 +79,7 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
                 if (offset != null) append(" OFFSET $offset")
             }
 
-            val result = querySongs(null, null, sortOrder, coverQuality)
+            val result = querySongs(null, null, sortOrder, artworkQuality)
             promise.resolve(result)
         } catch (e: Exception) {
             promise.reject("ERROR", e)
@@ -117,10 +117,10 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
 
                 while (it.moveToNext()) {
                     val album = WritableNativeMap()
-                    album.putString("id", it.getString(idIndex))
+                    album.putInt("id", it.getInt(idIndex))
                     album.putString("album", it.getString(albumIndex))
                     album.putString("artist", it.getString(artistIndex))
-                    album.putString("cover", it.getString(coverIndex))
+                    album.putString("artwork", it.getString(coverIndex))
 
                     albumList.pushMap(album)
                 }

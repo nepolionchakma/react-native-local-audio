@@ -1,12 +1,12 @@
 import { NativeModules } from "react-native";
 
 export type Song = {
-  id: string;
+  id: number; // Changed from string to number
   title: string;
   artist: string;
   album: string;
-  path: string;
-  cover: string;
+  url: string; // Changed from path to url
+  artwork: string; // Changed from cover to artwork
 };
 
 export type GetAllAudioOptions = {
@@ -14,7 +14,7 @@ export type GetAllAudioOptions = {
   orderBy?: "ASC" | "DESC";
   limit?: number;
   offset?: number;
-  coverQuality?: number;
+  artworkQuality?: number; // Changed from coverQuality to artworkQuality
 };
 
 type AudioModuleType = {

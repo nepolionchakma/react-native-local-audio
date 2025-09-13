@@ -1,17 +1,17 @@
 export type Song = {
-    id: string;
+    id: number;
     title: string;
     artist: string;
     album: string;
-    path: string;
-    cover: string;
+    url: string;
+    artwork: string;
 };
 export type GetAllAudioOptions = {
     sortBy?: "TITLE" | "ARTIST" | "ALBUM" | "DATE";
     orderBy?: "ASC" | "DESC";
     limit?: number;
     offset?: number;
-    coverQuality?: number;
+    artworkQuality?: number;
 };
 type AudioModuleType = {
     getAllAudio(options?: GetAllAudioOptions): Promise<Song[]>;

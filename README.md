@@ -3,7 +3,7 @@
 ````markdown
 # react-native-local-audio
 
-A lightweight React Native native module to fetch **local audio files** (with metadata like title, artist, album, and cover image) directly from the device storage.
+A lightweight React Native native module to fetch **local audio files** (with metadata like title, artist, album, and artwork) directly from the device storage.
 
 ✅ Works on **Android 6+**
 ⚠️ iOS support not yet implemented (coming soon).
@@ -18,10 +18,10 @@ A lightweight React Native native module to fetch **local audio files** (with me
   - `orderBy` → `ASC | DESC`
   - `limit` → number of items
   - `offset` → pagination offset
-  - `coverQuality` → album art quality (0–100)
+  - `artworkQuality` → album artwork quality (0–100)
 - Fetch songs by album
 - Search songs by title
-- Returns metadata: `id`, `path`, `title`, `artist`, `album`, `cover`
+- Returns metadata: `id`, `url`, `title`, `artist`, `album`, `artwork`
 
 ---
 
@@ -98,7 +98,7 @@ const songs = await AudioModule.getAllAudio({
   orderBy: "ASC",
   limit: 20,
   offset: 0,
-  coverQuality: 50,
+  artworkQuality: 50, // Album artwork quality
 });
 console.log(songs);
 
