@@ -14,14 +14,21 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
     private fun categorizeAudio(filePath: String): String {
         return when {
             filePath.endsWith(".mp3", ignoreCase = true) -> "song"
-            filePath.endsWith(".wav", ignoreCase = true) -> "song"
             filePath.endsWith(".m4a", ignoreCase = true) -> "song"
-            filePath.endsWith(".ogg", ignoreCase = true) -> "song"
+            filePath.endsWith(".ogg", ignoreCase = true) -> {
+                // Check if the .ogg file is in system ringtone or notification folders
+                if (filePath.contains("/Android/media/") && (filePath.contains("Ringtones") || filePath.contains("Notifications"))) {
+                    "ringtone" // or "notification" based on your needs
+                } else {
+                    "song" // Treat other .ogg files as songs
+                }
+            }
             filePath.endsWith(".flac", ignoreCase = true) -> "song"
-            filePath.endsWith(".aac", ignoreCase = true) -> "song"
-            filePath.endsWith(".3gp", ignoreCase = true) -> "recording"
+            filePath.endsWith(".aac", ignoreCase = true) -> "recording"
+            filePath.endsWith(".wav", ignoreCase = true) -> "recording"
             filePath.endsWith(".amr", ignoreCase = true) -> "recording"
             filePath.endsWith(".m4r", ignoreCase = true) -> "ringtone"
+            filePath.endsWith(".3gp", ignoreCase = true) -> "video"
             filePath.endsWith(".mp4", ignoreCase = true) -> "video"
             else -> "unknown" // For any unknown file type
         }
