@@ -10,6 +10,24 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
 
     override fun getName(): String = "AudioModule"
 
+    // Helper function to categorize based on file extension
+    private fun categorizeAudio(filePath: String): String {
+        return when {
+            filePath.endsWith(".mp3", ignoreCase = true) -> "song"
+            filePath.endsWith(".wav", ignoreCase = true) -> "song"
+            filePath.endsWith(".m4a", ignoreCase = true) -> "song"
+            filePath.endsWith(".ogg", ignoreCase = true) -> "song"
+            filePath.endsWith(".flac", ignoreCase = true) -> "song"
+            filePath.endsWith(".aac", ignoreCase = true) -> "song"
+            filePath.endsWith(".3gp", ignoreCase = true) -> "recording"
+            filePath.endsWith(".amr", ignoreCase = true) -> "recording"
+            filePath.endsWith(".m4r", ignoreCase = true) -> "ringtone"
+            filePath.endsWith(".mp4", ignoreCase = true) -> "video"
+            else -> "unknown" // For any unknown file type
+        }
+    }
+
+    // Query to fetch all audio data from MediaStore
     private fun querySongs(
         selection: String?,
         selectionArgs: Array<String>?,
@@ -42,12 +60,16 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
             while (it.moveToNext()) {
                 val song = WritableNativeMap()
                 val albumId = it.getLong(albumIdIndex)
+                val filePath = it.getString(pathIndex) ?: ""
 
                 song.putInt("id", it.getInt(idIndex))
                 song.putString("title", it.getString(titleIndex))
                 song.putString("artist", it.getString(artistIndex))
                 song.putString("album", it.getString(albumIndex))
-                song.putString("url", it.getString(pathIndex))
+                song.putString("url", filePath)
+
+                // Category based on file extension
+                song.putString("category", categorizeAudio(filePath))
 
                 val albumArtUri = Uri.parse("content://media/external/audio/albumart")
                 val artworkUri = Uri.withAppendedPath(albumArtUri, albumId.toString())
@@ -64,6 +86,7 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
         return audioList
     }
 
+    // Get all audio files, sorted and with options
     @ReactMethod
     fun getAllAudio(options: ReadableMap, promise: Promise) {
         try {
@@ -86,6 +109,7 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
         }
     }
 
+    // Get all audio files by album
     @ReactMethod
     fun getSongsByAlbum(promise: Promise) {
         try {
@@ -132,6 +156,7 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
         }
     }
 
+    // Search songs by title
     @ReactMethod
     fun searchSongsByTitle(options: ReadableMap, promise: Promise) {
         try {
@@ -145,15 +170,15 @@ class AudioModule(private val reactContext: ReactApplicationContext) :
             promise.reject("ERROR", e)
         }
     }
-}
 
-// ✅ Helper function (moved outside class, fixed)
-private fun getColumnName(name: String): String {
-    return when (name.uppercase()) {
-        "TITLE" -> MediaStore.Audio.Media.TITLE
-        "ARTIST" -> MediaStore.Audio.Media.ARTIST
-        "ALBUM" -> MediaStore.Audio.Media.ALBUM
-        "DATE" -> MediaStore.Audio.Media.DATE_ADDED
-        else -> MediaStore.Audio.Media.TITLE
+    // Helper function to get column name for sorting
+    private fun getColumnName(name: String): String {
+        return when (name.uppercase()) {
+            "TITLE" -> MediaStore.Audio.Media.TITLE
+            "ARTIST" -> MediaStore.Audio.Media.ARTIST
+            "ALBUM" -> MediaStore.Audio.Media.ALBUM
+            "DATE" -> MediaStore.Audio.Media.DATE_ADDED
+            else -> MediaStore.Audio.Media.TITLE
+        }
     }
 }
